@@ -1,0 +1,14 @@
+<h2>My Heroes</h2>
+
+<ul class="heroes">
+  <li *ngFor="let hero of heroes">
+    <a routerLink="/detail/{{hero.id}}">
+      <span class="badge">{{hero.id}}</span> {{hero.name}}
+    </a>
+  </li>
+</ul>
+
+<!-- OLD CODE - 'hero' is an @Input property in the child component, it's value will be set equal to 'selectedHero'.
+It's a one way data binding from the selectedHero property of the HeroComponent to the hero property
+of the target element, which maps to the hero property of the HeroDetailComponent. -->
+<!-- <app-hero-detail [hero]="selectedHero"></app-hero-detail> -->
