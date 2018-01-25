@@ -5,10 +5,17 @@
     <a routerLink="/detail/{{hero.id}}">
       <span class="badge">{{hero.id}}</span> {{hero.name}}
     </a>
+    <button class="delete" title="delete hero" (click)="deleteHero(hero)">Delete</button>
   </li>
 </ul>
 
-<!-- OLD CODE - 'hero' is an @Input property in the child component, it's value will be set equal to 'selectedHero'.
-It's a one way data binding from the selectedHero property of the HeroComponent to the hero property
-of the target element, which maps to the hero property of the HeroDetailComponent. -->
-<!-- <app-hero-detail [hero]="selectedHero"></app-hero-detail> -->
+<div>
+  <label>Hero name:
+    <!--template reference-->
+    <input #heroName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="addHero(heroName.value); heroName.value=''">
+    ADD
+  </button>
+</div>
