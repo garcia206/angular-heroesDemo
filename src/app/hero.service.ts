@@ -6,7 +6,7 @@ import { of } from 'rxjs/Observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
-
+// Http options, used multiple times below
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -25,6 +25,7 @@ export class HeroService {
     private messageService: MessageService
   ) { }
 
+  // Logging function
   private log(message: string) {
     this.messageService.add('HeroService: ' + message);
   }
@@ -49,7 +50,7 @@ export class HeroService {
     };
   }
 
-  // New code, using http
+  // Get ALL heroes using http
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
     .pipe(
@@ -60,7 +61,7 @@ export class HeroService {
   );;
   }
 
-  // getHero() has an asynchronous signature. It returns a mock hero as an Observable, using the RxJS of() function.
+  // Get ONE hero using http
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
 
@@ -71,6 +72,7 @@ export class HeroService {
       );
   }
 
+  // Update ONE hero
   updateHero(hero: Hero) {
     // The HttpClient.put() method takes 3 params(URL, dataToUpdate, options)
     // The URL is unchanged. The heroes web API knows which hero to update by looking at the hero's id.
@@ -80,6 +82,7 @@ export class HeroService {
     );
   }
 
+  // Create new hero
   addHero(hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
       .pipe(
@@ -88,6 +91,7 @@ export class HeroService {
       );
   }
 
+  // Delete ONE hero
   deleteHero(hero: Hero | number): Observable<Hero> {
     const id = typeof hero === 'number' ? hero : hero.id;
     const url = `${this.heroesUrl}/${id}`;
@@ -98,6 +102,7 @@ export class HeroService {
     );
   }
 
+  // Find HEROES
   searchHeroes(term: string): Observable<Hero[]> {
 
     if (!term.trim()) {
@@ -105,21 +110,12 @@ export class HeroService {
       return of([]);
     }
 
-    //const url = `api/heroes/?name=${term}`;
-
     return this.http.get<Hero[]>(`api/heroes/?name=${term}`).pipe(
       tap(_ => this.log(`found heroes matching "${term}"`)),
       catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
 
-     // OLD CODE
-  // getHeroes(): Observable<Hero[]> {
-  //   // send the message_after_fetching the heroes
-  //   this.log('HeroService: Fetched ALL heroes');
-  //   // of(HEROES) returns an Observable<Hero[]> that emits a single value, the array of mock heroes.
-  //   return of(HEROES);
-  // }
 
 
 }
